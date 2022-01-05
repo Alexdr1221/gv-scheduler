@@ -1,0 +1,60 @@
+{
+  "clients": [
+    {
+      "id": 1,
+      "letter": "R",
+      "name": "Ruddy Jedrzej",
+      "phone": "503-988-5650",
+      "email": "Ruddy93@yahoo.com",
+      "street": "14700 SE Division St",
+      "city": "Portland",
+      "state": "OR",
+      "zip": "97236",
+      "paymentMethod": "Venmo",
+      "paymentAmount": 170,
+      "notes": "This is a boring test of multiple paragraphs.\n\nHi mom"
+    },
+    {
+      "id": 2,
+      "letter": "M",
+      "name": "Mallorie Alessandrini",
+      "phone": "971-885-5459",
+      "email": "Malessandrini@gmail.com",
+      "street": "123500 NE Sandy Blvd",
+      "city": "Wood Village",
+      "state": "OR",
+      "zip": "97060",
+      "paymentMethod": "Venmo",
+      "paymentAmount": 220,
+      "notes": "Security Code: 882734"
+    },
+    {
+      "id": 3,
+      "letter": "E",
+      "name": "Elizabeth Wicklen",
+      "phone": "503-981-7810",
+      "email": "Wicklen.Elisabetta@outlook.com",
+      "street": "117404 SE Division St",
+      "city": "Portland",
+      "state": "OR",
+      "zip": "97236",
+      "paymentMethod": "Check",
+      "paymentAmount": 170,
+      "notes": "Do not clean the basement."
+    },
+    {
+      "id": 4,
+      "letter": "S",
+      "name": "Sarah Fawdrey",
+      "phone": "541-256-7445",
+      "email": "SekaF73@gmail.com",
+      "street": "1001 SW Highland Dr",
+      "city": "Gresham",
+      "state": "OR",
+      "zip": "97080",
+      "paymentMethod": "Cash App",
+      "paymentAmount": 150,
+      "notes": "Leave the driveway open."
+    }
+  ]
+}
