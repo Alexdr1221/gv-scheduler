@@ -1,6 +1,6 @@
 # G&V Clean Break Scheduler (gv-scheduler)
 
-SET senior project for OIT. Client management and scheduling application for G&V Clean Break LLC
+Client management and scheduling software for internal use by G&V Clean Break LLC. Also serves as submission for Oregon Tech's software senior project.
 
 ## Install the dependencies
 ```bash
@@ -23,4 +23,4 @@ quasar build
 ```
 
 ### Customize the configuration
-See [Configuring quasar.conf.js](https://v1.quasar.dev/quasar-cli/quasar-conf-js).
+See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).

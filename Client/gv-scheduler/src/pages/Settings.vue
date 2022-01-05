@@ -1,25 +1,27 @@
 <template>
   <q-page>
-    <q-toggle v-model="value" color="primary" keep-color label="Dark Mode" @input="darkMode"/>
+    <q-toggle v-model="darkStatus" color="primary" keep-color label="Dark Mode" @click="darkUpdate"/>
   </q-page>
 </template>
 
 <script>
+import { ref } from 'vue'
+import { useQuasar } from 'quasar'
+
 export default {
-    data() {
-        return {
-            value: false
-        }
-    },
-    mounted(){
-        this.value = this.$q.dark.isActive;
-    },
-    methods:{
-        darkMode(){
-            this.$q.dark.set(this.value)
-        }
+  setup() {
+    const $q = useQuasar()
+    const darkStatus = ref($q.dark.isActive)
+
+    function darkUpdate() {
+      $q.dark.toggle(darkStatus.value)
     }
-    
+
+    return {
+      darkStatus,
+      darkUpdate
+    }
+  }
 }
 </script>
 
