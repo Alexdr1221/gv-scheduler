@@ -10,9 +10,13 @@ import { useQuasar } from 'quasar'
 
 export default {
   setup() {
+    //Internal Varaibles
     const $q = useQuasar()
+
+    //Exposed Variables
     const darkStatus = ref($q.dark.isActive)
 
+    //Exposed Functions
     function darkUpdate() {
       $q.dark.toggle(darkStatus.value)
     }

@@ -1,7 +1,7 @@
 {
   "clients": [
     {
-      "id": 2,
+      "id": 0,
       "letter": "M",
       "name": "Mallorie Alessandrini",
       "phone": "971-885-5459",
@@ -15,7 +15,7 @@
       "notes": "Security Code: 882734"
     },
     {
-      "id": 3,
+      "id": 1,
       "letter": "E",
       "name": "Elizabeth Wicklen",
       "phone": "503-981-7810",
@@ -29,7 +29,7 @@
       "notes": "Do not clean the basement."
     },
     {
-      "id": 4,
+      "id": 2,
       "letter": "S",
       "name": "Sarah Fawdrey",
       "phone": "541-256-7445",
@@ -41,6 +41,34 @@
       "paymentMethod": "Cash App",
       "paymentAmount": 150,
       "notes": "Leave the driveway open."
+    },
+    {
+      "id": 3,
+      "letter": "J",
+      "name": "Jason Sever",
+      "phone": "(503) 996-1548",
+      "email": "jsonsvr@gmail.com",
+      "street": "1337 Internet Ave",
+      "city": "Portland",
+      "state": "OR",
+      "zip": "97213",
+      "paymentMethod": "Paypal",
+      "paymentAmount": "200",
+      "notes": ""
+    },
+    {
+      "id": 4,
+      "letter": "A",
+      "name": "Alex Diaz-Rodriguez",
+      "phone": "(503) 737-7298",
+      "email": "alexdr1221@gmail.com",
+      "street": "3205 Campus Dr",
+      "city": "Klamath Falls",
+      "state": "OR",
+      "zip": "97601",
+      "paymentMethod": "Venmo",
+      "paymentAmount": "100",
+      "notes": ""
     }
   ]
 }

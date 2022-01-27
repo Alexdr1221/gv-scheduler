@@ -28,7 +28,7 @@
     <q-input class="q-mx-sm q-my-lg" filled v-model="newClient.notes" autogrow label="Notes" />
     <div align="center">
       <q-btn class="q-mx-sm" color="primary" @click="cancelChanges" label="Cancel"/>
-      <q-btn class="q-mx-sm" color="primary" @click="saveChanges" label="Save"/> 
+      <q-btn class="q-mx-sm" color="primary" @click="saveChanges" label="Save"/>
     </div>
   </q-page>
   <q-page v-else>
@@ -44,7 +44,7 @@
 import axios from 'axios';
 const BASEURL = 'http://localhost:3000/clients/'
 const paymentMethods = ["Paypal", "Venmo", "Cash App", "Cash", "Check"];
-const states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 
+const states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
                 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
                 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
                 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
@@ -92,16 +92,16 @@ export default {
       }
     }
 
-   
+
   },
   methods: {
       cancelChanges(){
           if (this.$route.query.newClient)
           {
             console.log("New Client Canceled")
-            this.$router.back()            
-            
-          } 
+            this.$router.back()
+
+          }
           else
           {
             console.log("Changes Canceled");
@@ -111,18 +111,20 @@ export default {
       saveChanges(){
           if (this.$route.query.newClient)
           {
-            this.newClient.id = this.clients.length + 1;
+            console.log(this.clients.length)
+            this.newClient.id = this.clients.length;
+            console.log("New ID: " + this.newClient.id)
             this.newClient.letter = this.newClient.name[0]
             this.uploadClient()
             console.log("New Client Created")
-            this.$router.go(-1)            
-          } 
+            this.$router.go(-1)
+          }
           else
           {
             this.client.letter = this.client.name[0]
             this.updateClient()
             console.log("Changes Saved")
-            this.$router.go(-1)  
+            this.$router.go(-1)
           }
       },
       async uploadClient(){
