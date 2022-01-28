@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <q-resize-observer @resize="onResize"/>
+    <h3 id="monthTitle" class="q-ma-sm row justify-center">Month</h3>
     <div class="row justify-center full-width">
         <q-btn class="q-ma-sm" push label="Today" @click="onToday" />
         <q-btn class="q-ma-sm" push label="Prev" @click="onPrev" />
@@ -9,7 +9,6 @@
 
     <div class="row full-width full-height">
       <q-calendar-day
-
         ref="calendar"
         v-model="selectedDate"
         view="day"
@@ -26,21 +25,6 @@
         @click-interval="onClickInterval"
         @click-head-intervals="onClickHeadIntervals"
         @click-head-day="onClickHeadDay"/>
-      <!-- <q-calendar-day
-        v-else
-        ref="calendar"
-        v-model="selectedDate"
-        view="week"
-        date-type="round"
-        animated
-        bordered
-        @change="onChange"
-        @moved="onMoved"
-        @click-date="onClickDate"
-        @click-time="onClickTime"
-        @click-interval="onClickInterval"
-        @click-head-intervals="onClickHeadIntervals"
-        @click-head-day="onClickHeadDay"/> -->
     </div>
   </q-page>
 </template>
@@ -54,6 +38,11 @@ import '@quasar/quasar-ui-qcalendar/src/QCalendarDay.sass'
 import { useQuasar } from 'quasar'
 import { defineComponent } from 'vue'
 
+const months = ['January', 'February', 'March',
+                'April', 'May', 'June', 'July',
+                'August', 'September', 'October',
+                'November', 'December']
+
 export default defineComponent({
   name: 'WeekDateType',
   components: {
@@ -63,15 +52,15 @@ export default defineComponent({
     return {
       selectedDate: today(),
       dateType: 'square',
-      numDays: 0
+      numDays: 5,
+      curMonth: parseInt(today()[5] + today()[6])
     }
   },
-
-  methods: {
-    onResize() {
+  mounted() {
       const $q = useQuasar()
 
-      if ($q.screen.lt.md)
+      // Set the number of days displayed
+      if ($q.platform.is.mobile)
       {
         this.numDays = 3
       }
@@ -79,9 +68,19 @@ export default defineComponent({
       {
         this.numDays = 5
       }
-    },
+
+    // Set the month title
+    var title = document.getElementById('monthTitle')
+    if (title != null)
+    {
+      title.innerHTML = this.curMonth
+    }
+  },
+
+  methods: {
     onToday () {
       this.$refs.calendar.moveToToday()
+      console.log(this.curMonth)
     },
     onPrev () {
       this.$refs.calendar.prev()
@@ -95,6 +94,12 @@ export default defineComponent({
     },
     onChange (data) {
       console.log('onChange', data)
+      this.curMonth = months[data.days[this.numDays - 1].month - 1]
+      var title = document.getElementById('monthTitle')
+      if (title != null)
+      {
+        title.innerHTML = this.curMonth
+      }
     },
     onClickDate (data) {
       console.log('onClickDate', data)
