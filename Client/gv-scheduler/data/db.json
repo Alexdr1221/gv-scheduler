@@ -12,7 +12,7 @@
       "zip": "97060",
       "paymentMethod": "Venmo",
       "appointment": {
-        "service": "Landscaping",
+        "service": "House Cleaning",
         "paymentAmount": "220",
         "date": "2-12-2022",
         "time": "11:00 AM"
@@ -67,17 +67,12 @@
       "name": "Alex Diaz-Rodriguez",
       "phone": "(503) 737-7298",
       "email": "alexdr1221@gmail.com",
-      "street": "3205 Campus Dr",
+      "street": "532 N Eldorado Ave",
       "city": "Klamath Falls",
       "state": "OR",
       "zip": "97601",
       "paymentMethod": "Venmo",
-      "appointment": {
-        "service": "House Cleaning",
-        "paymentAmount": "50",
-        "date": "02-07-2022",
-        "time": "02:00 PM"
-      },
+      "appointment": {},
       "notes": ""
     }
   ]

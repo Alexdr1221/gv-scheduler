@@ -1,146 +1,158 @@
 <template>
-  <q-page v-if="client">
-    <q-input class="q-mx-sm q-my-lg" filled v-model="client.name" label="Name" />
-    <q-input class="q-mx-sm q-my-lg" filled counter type="tel" mask="(###) ###-####" v-model="client.phone" maxlength="14" label="Phone Number" />
-    <q-input class="q-mx-sm q-my-lg" filled type="email" v-model="client.email" label="Email" />
-    <q-input class="q-mx-sm q-my-lg" filled v-model="client.street" label="Street" />
-    <q-input class="q-mx-sm q-my-lg" filled v-model="client.city" label="City" />
-    <q-select class="q-mx-sm q-my-lg" filled v-model="client.state" :options="states" label="State"/>
-    <q-input class="q-mx-sm q-my-lg" filled counter v-model="client.zip" label="Zip" maxlength="5" />
-    <q-select class="q-mx-sm q-my-lg" filled v-model="client.paymentMethod" :options="paymentMethods" label="Payment Method" />
-    <q-input class="q-mx-sm q-my-lg" filled type="number" v-model="client.paymentAmount" label="Payment Amount" prefix="$" />
-    <q-input class="q-mx-sm q-my-lg" filled v-model="client.notes" autogrow label="Notes" />
+  <q-page>
+    <q-input class="q-mx-sm q-my-lg" filled v-model="name" label="Name" />
+    <q-input class="q-mx-sm q-my-lg" filled counter type="tel" mask="(###) ###-####" v-model="phone" maxlength="14" label="Phone Number" />
+    <q-input class="q-mx-sm q-my-lg" filled type="email" v-model="email" label="Email" />
+    <q-input class="q-mx-sm q-my-lg" filled v-model="street" label="Street" />
+    <q-input class="q-mx-sm q-my-lg" filled v-model="city" label="City" />
+    <q-select class="q-mx-sm q-my-lg" filled v-model="state" :options="states" label="State"/>
+    <q-input class="q-mx-sm q-my-lg" filled counter v-model="zip" label="Zip" maxlength="5" />
+    <q-select class="q-mx-sm q-my-lg" filled v-model="paymentMethod" :options="paymentMethods" label="Payment Method" />
+    <q-input class="q-mx-sm q-my-lg" filled v-model="notes" autogrow label="Notes" />
     <div align="center">
       <q-btn class="q-mx-sm" color="primary" @click="cancelChanges" label="Cancel"/>
       <q-btn class="q-mx-sm" color="primary" @click="saveChanges" label="Save"/>
     </div>
   </q-page>
-  <q-page v-else-if="this.$route.query.newClient">
-    <q-input class="q-mx-sm q-my-lg" filled v-model="newClient.name" label="Name" />
-    <q-input class="q-mx-sm q-my-lg" filled counter type="tel" mask="(###) ###-####" v-model="newClient.phone" maxlength="14" label="Phone Number" />
-    <q-input class="q-mx-sm q-my-lg" filled type="email" v-model="newClient.email" label="Email" />
-    <q-input class="q-mx-sm q-my-lg" filled v-model="newClient.street" label="Street" />
-    <q-input class="q-mx-sm q-my-lg" filled v-model="newClient.city" label="City" />
-    <q-select class="q-mx-sm q-my-lg" filled v-model="newClient.state" :options="states" label="State"/>
-    <q-input class="q-mx-sm q-my-lg" filled counter v-model="newClient.zip" label="Zip" maxlength="5" />
-    <q-select class="q-mx-sm q-my-lg" filled v-model="newClient.paymentMethod" :options="paymentMethods" label="Payment Method" />
-    <q-input class="q-mx-sm q-my-lg" filled type="number" v-model="newClient.paymentAmount" label="Payment Amount" prefix="$" />
-    <q-input class="q-mx-sm q-my-lg" filled v-model="newClient.notes" autogrow label="Notes" />
-    <div align="center">
-      <q-btn class="q-mx-sm" color="primary" @click="cancelChanges" label="Cancel"/>
-      <q-btn class="q-mx-sm" color="primary" @click="saveChanges" label="Save"/>
-    </div>
-  </q-page>
-  <q-page v-else>
-        <q-inner-loading showing>
-        <q-spinner-gears size="100px" color="primary" />
-        <h3>LOADING...</h3>
-      </q-inner-loading>
-  </q-page>
-
 </template>
 
 <script>
+import { useRouter, useRoute } from 'vue-router'
+import { ref, onMounted } from 'vue'
 import axios from 'axios';
-const BASEURL = 'http://localhost:3000/clients/'
-const paymentMethods = ["Paypal", "Venmo", "Cash App", "Cash", "Check"];
-const states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
+
+export default {
+  props: {
+    id: String
+  },
+  setup (props) {
+    //Internal Varaibles
+    const BASEURL = 'http://localhost:3000/clients/'
+    const $router = useRouter()
+    const $route = useRoute()
+    var newId = 0
+
+    //Exposed Variables
+    const states = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
                 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
                 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
                 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
-                'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
+                'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY']
+    const paymentMethods = ["Paypal", "Venmo", "Cash App", "Cash", "Check"]
+    var client = null
+    const name = ref()
+    const phone = ref()
+    const email = ref()
+    const street = ref()
+    const city = ref()
+    const state = ref()
+    const zip = ref()
+    const paymentMethod = ref()
+    const notes = ref()
 
-export default {
-  props: ['id'],
-  data() {
-    return {
-        clients: [],
-        client: null,
-        newClient:{
-            id: 0,
-            letter: '',
-            name: '',
-            phone: '',
-            email: '',
-            street: '',
-            city: '',
-            state: '',
-            zip: '',
-            paymentMethod: '',
-            paymentAmount: 0,
-            notes: ''
-        },
-        paymentMethods,
-        states
-    }
-  },
-  async mounted(){
-      if (this.$route.query.newClient){
+    // Lifecycle Hooks
+    onMounted(async () => {
+      if ($route.query.newClient == 'true'){
         try {
           const res = await axios.get(BASEURL);
-          this.clients = res.data;
+          newId = res.data.length;
         } catch (error) {
           console.error(error);
         }
       }
       else{
         try {
-          const res = await axios.get(BASEURL + this.id);
-          this.client = res.data;
+          const res = await axios.get(BASEURL + props.id);
+          client = res.data;
+          name.value = client.name
+          phone.value = client.phone
+          email.value = client.email
+          street.value = client.street
+          city.value = client.city
+          state.value = client.state
+          zip.value = client.zip
+          paymentMethod.value = client.paymentMethod
+          notes.value = client.notes
         } catch (error) {
           console.error(error);
+        }
       }
-    }
+    })
 
-
-  },
-  methods: {
-      cancelChanges(){
-          if (this.$route.query.newClient)
+    //Exposed Functions
+    function cancelChanges(){
+          if ($route.query.newClient == 'true')
           {
             console.log("New Client Canceled")
-            this.$router.back()
+            $router.back()
 
           }
           else
           {
             console.log("Changes Canceled");
-            this.$router.back()
+            $router.back()
           }
-      },
-      saveChanges(){
-          if (this.$route.query.newClient)
+      }
+
+      function saveChanges(){
+          client = {
+            id: newId,
+            letter: name.value[0],
+            name: name.value,
+            phone: phone.value,
+            email: email.value,
+            street: street.value,
+            city: city.value,
+            state: state.value,
+            zip: zip.value,
+            paymentMethod: paymentMethod.value,
+            appointment: { },
+            notes: notes.value
+          }
+          if ($route.query.newClient == 'true')
           {
-            console.log(this.clients.length)
-            this.newClient.id = this.clients.length;
-            console.log("New ID: " + this.newClient.id)
-            this.newClient.letter = this.newClient.name[0]
-            this.uploadClient()
-            console.log("New Client Created")
-            this.$router.go(-1)
+            console.log("Uploading new client...")
+            uploadClient()
           }
           else
           {
-            this.client.letter = this.client.name[0]
-            this.updateClient()
-            console.log("Changes Saved")
-            this.$router.go(-1)
+            console.log("Updating client...")
+            updateClient()
           }
-      },
-      async uploadClient(){
+          $router.back()
+      }
+
+      async function uploadClient(){
         try {
-          const res = await axios.post(BASEURL, this.newClient)
-        } catch (error) {
-          console.error(error)
-        }
-      },
-      async updateClient(){
-        try {
-          const res = await axios.put(BASEURL + this.id, this.client)
+          const res = await axios.post(BASEURL, client)
         } catch (error) {
           console.error(error)
         }
       }
+
+      async function updateClient(){
+        try {
+          const res = await axios.put(BASEURL + props.id, client)
+        } catch (error) {
+          console.error(error)
+        }
+      }
+
+    return {
+      states,
+      paymentMethods,
+      name,
+      phone,
+      email,
+      street,
+      city,
+      state,
+      zip,
+      paymentMethod,
+      notes,
+      cancelChanges,
+      saveChanges
+    }
   }
 }
 </script>

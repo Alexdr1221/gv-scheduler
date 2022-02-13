@@ -36,11 +36,9 @@
 </template>
 
 <script>
-import { useQuasar } from 'quasar'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import axios from 'axios';
-const BASEURL = 'http://localhost:3000/clients/'
 
 export default {
   props: {
@@ -48,17 +46,16 @@ export default {
   },
   setup(props) {
     //Internal Varaibles
-    const $q = useQuasar()
+    const BASEURL = 'http://localhost:3000/clients/'
     const $router = useRouter()
-    const $route = useRoute()
     var client = null
 
     //Exposed Variables
     const services = ['House Cleaning', 'Landscaping']
-    var service = ref()
-    var payment = ref()
-    var time = ref()
-    var date = ref ()
+    const service = ref()
+    const payment = ref()
+    const time = ref()
+    const date = ref ()
 
     // Lifecycle Hooks
     onMounted(async () => {
