@@ -8,7 +8,21 @@
     <q-input disable class="q-mx-sm q-my-lg" filled v-model="client.state" label="State" maxlength="2" />
     <q-input disable class="q-mx-sm q-my-lg" filled v-model="client.zip" label="Zip" maxlength="5" />
     <q-select disable class="q-mx-sm q-my-lg" filled v-model="client.paymentMethod" label="Payment Method" />
-    <q-btn class="q-mx-sm q-my-lg" label="Appointments" :to="{name: 'AppointmentEdit', params: { clientId: client.id, appId: 0 }, query: {newAppointment: false}}" />
+    <q-list class="q-mx-sm q-my-lg">
+      <q-item-label header>Appointments</q-item-label>
+      <q-item
+        v-for="appointment in client.appointment"
+        :key="appointment.id"
+        class="q-my-sm"
+        clickable
+        v-ripple
+        :to="{name: 'AppointmentEdit', params: { clientId: client.id, appId: appointment.id }, query: {newAppointment: false}}">
+        <q-item-section>
+          <q-item-label>{{ appointment.service }}</q-item-label>
+          <q-item-label caption lines="1">{{ appointment.date }} {{appointment.time }}</q-item-label>
+        </q-item-section>
+      </q-item>
+    </q-list>
     <q-input disable class="q-mx-sm q-my-lg" filled v-model="client.notes" autogrow label="Notes" />
     <div align="center">
       <q-btn color="negative" @click="removeClient" label="Delete"/>

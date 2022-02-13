@@ -73,6 +73,7 @@ export default {
       if ($route.query.newAppointment == 'false')
       {
         appId = props.appId
+        console.log(props)
         console.log("Importing Client Info...")
         try {
           const res = await axios.get(BASEURL + props.clientId)
