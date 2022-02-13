@@ -30,7 +30,12 @@
       "state": "OR",
       "zip": "97236",
       "paymentMethod": "Check",
-      "appointment": {},
+      "appointment": {
+        "service": "Landscaping",
+        "paymentAmount": "220",
+        "date": "02-11-2022",
+        "time": "11:00 AM"
+      },
       "notes": "Do not clean the basement."
     },
     {
@@ -44,7 +49,12 @@
       "state": "OR",
       "zip": "97080",
       "paymentMethod": "Cash App",
-      "appointment": {},
+      "appointment": {
+        "service": "Landscaping",
+        "paymentAmount": "300",
+        "date": "02-07-2022",
+        "time": "10:30 AM"
+      },
       "notes": "Leave the driveway open."
     },
     {
@@ -58,7 +68,12 @@
       "state": "OR",
       "zip": "97213",
       "paymentMethod": "Paypal",
-      "appointment": {},
+      "appointment": {
+        "service": "House Cleaning",
+        "paymentAmount": "330",
+        "date": "02-09-2022",
+        "time": "09:00 AM"
+      },
       "notes": ""
     },
     {
@@ -72,7 +87,12 @@
       "state": "OR",
       "zip": "97601",
       "paymentMethod": "Venmo",
-      "appointment": {},
+      "appointment": {
+        "service": "House Cleaning",
+        "paymentAmount": "30",
+        "date": "02-07-2022",
+        "time": "02:00 PM"
+      },
       "notes": ""
     }
   ]

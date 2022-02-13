@@ -1,5 +1,6 @@
 <template>
   <q-page>
+    <q-select v-if="fromSchedule == 'true'" class="q-mx-sm q-my-lg" filled @popup-hide="LoadAppointment" v-model="selectedClient" label="Client" :options="clientNames" />
     <q-select class="q-mx-sm q-my-lg" filled v-model="service" label="Service" :options="services"/>
     <q-input class="q-mx-sm q-my-lg" filled v-model="payment" type="number" label="Payment Amount" prefix="$" />
     <q-input class="q-mx-sm q-my-lg" filled v-model="time" >
@@ -30,13 +31,14 @@
     </q-input>
     <div align="center">
       <q-btn class="q-mx-sm" color="primary" @click="cancelChanges" label="Cancel"/>
-      <q-btn class="q-mx-sm" color="primary" @click="saveChanges" label="Save"/>
+      <q-btn class="q-mx-sm" color="primary" :disable="saveDisable" @click="saveChanges" label="Save"/>
     </div>
   </q-page>
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
+import { useQuasar } from 'quasar'
+import { useRoute, useRouter } from 'vue-router'
 import { ref, onMounted } from 'vue'
 import axios from 'axios';
 
@@ -46,35 +48,75 @@ export default {
   },
   setup(props) {
     //Internal Varaibles
-    const BASEURL = 'http://localhost:3000/clients/'
+    const $q = useQuasar()
     const $router = useRouter()
+    const $route = useRoute()
+    const BASEURL = 'http://localhost:3000/clients/'
+    var clients = null
     var client = null
+    var selId = null
 
     //Exposed Variables
     const services = ['House Cleaning', 'Landscaping']
+    const clientNames = ref([])
+    const fromSchedule = ref()
+    const selectedClient = ref()
     const service = ref()
     const payment = ref()
     const time = ref()
-    const date = ref ()
+    const date = ref()
+    const saveDisable = ref()
 
     // Lifecycle Hooks
     onMounted(async () => {
-      console.log("Importing Client Info...")
-      try {
-        const res = await axios.get(BASEURL + props.id)
-        client = res.data
-        console.log(client)
-        service.value = client.appointment.service
-        payment.value = client.appointment.paymentAmount
-        date.value = client.appointment.date
-        time.value = client.appointment.time
-    } catch (error) {
-        console.error(error);
-        $router.push('/clientNotFound')
+      fromSchedule.value = $route.query.newAppointment
+      if ($route.query.newAppointment == 'false')
+      {
+        console.log("Importing Client Info...")
+        try {
+          const res = await axios.get(BASEURL + props.id)
+          client = res.data
+          console.log(client)
+          service.value = client.appointment.service
+          payment.value = client.appointment.paymentAmount
+          date.value = client.appointment.date
+          time.value = client.appointment.time
+        } catch (error) {
+          console.error(error);
+          $router.push('/clientNotFound')
+        }
+      }
+      else
+      {
+        console.log("Loading Client List...")
+        saveDisable.value = true
+        try {
+          const res = await axios.get(BASEURL)
+          clients = res.data
+          console.log(clients)
+        } catch (error) {
+          console.error(error);
+          $router.push('/clientNotFound')
+        }
+        for (let index in clients)
+        {
+          clientNames.value.push(clients[index].name)
+        }
       }
     })
 
     //Exposed Functions
+    function LoadAppointment() {
+      console.log(selectedClient.value)
+      saveDisable.value = false
+      selId = clients.findIndex((clients) => clients.name==selectedClient.value)
+      client = clients[selId]
+      service.value = client.appointment.service
+      payment.value = client.appointment.paymentAmount
+      date.value = client.appointment.date
+      time.value = client.appointment.time
+    }
+
     function saveChanges() {
       console.log("Saving Changes...")
       client.appointment.service = service.value
@@ -92,21 +134,37 @@ export default {
     }
 
     async function updateClient() {
-        try {
-          const res = await axios.put(BASEURL + props.id, client)
-        } catch (error) {
-          console.error(error)
+        if ($route.query.newAppointment == 'false')
+        {
+          try {
+            const res = await axios.put(BASEURL + props.id, client)
+          } catch (error) {
+            console.error(error)
+          }
+        }
+        else
+        {
+          try {
+            const res = await axios.put(BASEURL + selId, client)
+          } catch (error) {
+            console.error(error)
+          }
         }
       }
 
     return {
+      clientNames,
+      fromSchedule,
+      selectedClient,
       service,
       payment,
       time,
       date,
       services,
+      LoadAppointment,
       saveChanges,
-      cancelChanges
+      cancelChanges,
+      saveDisable
     }
   }
 }
