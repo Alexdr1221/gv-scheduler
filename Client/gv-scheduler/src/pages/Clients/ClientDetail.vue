@@ -8,7 +8,7 @@
     <q-input disable class="q-mx-sm q-my-lg" filled v-model="client.state" label="State" maxlength="2" />
     <q-input disable class="q-mx-sm q-my-lg" filled v-model="client.zip" label="Zip" maxlength="5" />
     <q-select disable class="q-mx-sm q-my-lg" filled v-model="client.paymentMethod" label="Payment Method" />
-    <q-btn class="q-mx-sm q-my-lg" label="Appointments" :to="{name: 'AppointmentEdit', params: { id: client.id }, query: {newAppointment: false}}" />
+    <q-btn class="q-mx-sm q-my-lg" label="Appointments" :to="{name: 'AppointmentEdit', params: { clientId: client.id, appId: 0 }, query: {newAppointment: false}}" />
     <q-input disable class="q-mx-sm q-my-lg" filled v-model="client.notes" autogrow label="Notes" />
     <div align="center">
       <q-btn color="negative" @click="removeClient" label="Delete"/>
@@ -26,37 +26,53 @@
 </template>
 
 <script>
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import axios from 'axios';
-const BASEURL = 'http://localhost:3000/clients/';
 
 export default {
-  props: ['id'],
-  data() {
-    return {
-      client: null
-    }
+  props: {
+    id: String
   },
-  async mounted(){
-    try {
-      const res = await axios.get(BASEURL + this.id);
-      this.client = res.data;
-    } catch (error) {
-      console.error(error);
-      this.$router.push('/clientNotFound')
-    }
-  },
-  methods:{
-    async removeClient(){
+  setup(props) {
+    // Internal Variables
+    const $router = useRouter()
+    const BASEURL = 'http://localhost:3000/clients/';
+
+    // Exposed Variables
+    const client = ref()
+
+    // Lifecycle Hooks
+    onMounted(async () => {
       try {
-        const res = await axios.delete(BASEURL + this.id);
+        const res = await axios.get(BASEURL + props.id);
+        client.value = res.data;
+      } catch (error) {
+        console.error(error);
+        $router.push('/clientNotFound')
+      }
+    })
+
+    // Exposed Functions
+    async function removeClient(){
+      try {
+        const res = await axios.delete(BASEURL + props.id);
         console.log("Client Removed")
-        this.$router.go(-1)
+        $router.back()
       } catch (error) {
         console.error(error);
       }
     }
+
+    return {
+      client,
+      removeClient
+    }
   }
 }
+
+
+
 </script>
 
 <style>

@@ -27,7 +27,7 @@
         @click-head-day="onClickHeadDay"/>
     </div>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
-      <q-btn fab icon="edit" :to="{name: 'AppointmentEdit', query: {newAppointment: true}}" color="accent" />
+      <q-btn fab icon="add" :to="{name: 'AppointmentEdit', query: {newAppointment: true}}" color="accent" />
     </q-page-sticky>
   </q-page>
 </template>
