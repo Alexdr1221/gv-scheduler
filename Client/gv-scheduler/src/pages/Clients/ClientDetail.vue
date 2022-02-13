@@ -9,6 +9,7 @@
     <q-input disable class="q-mx-sm q-my-lg" filled v-model="client.zip" label="Zip" maxlength="5" />
     <q-select disable class="q-mx-sm q-my-lg" filled v-model="client.paymentMethod" label="Payment Method" />
     <q-input disable class="q-mx-sm q-my-lg" filled type="number" v-model="client.paymentAmount" label="Payment Amount" prefix="$" />
+    <q-btn class="q-mx-sm q-my-lg" label="Appointments" :to="{name: 'AppointmentEdit', params: { id: client.id }, query: {newAppointment: false}}" />
     <q-input disable class="q-mx-sm q-my-lg" filled v-model="client.notes" autogrow label="Notes" />
     <div align="center">
       <q-btn color="negative" @click="removeClient" label="Delete"/>
@@ -53,7 +54,7 @@ export default {
         this.$router.go(-1)
       } catch (error) {
         console.error(error);
-      }      
+      }
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <h3 id="monthTitle" class="q-ma-sm row justify-center">Month</h3>
+    <h3 class="q-ma-sm row justify-center">{{ curMonth }}</h3>
     <div class="row justify-center full-width">
         <q-btn class="q-ma-sm" push label="Today" @click="onToday" />
         <q-btn class="q-ma-sm" push label="Prev" @click="onPrev" />
@@ -68,13 +68,6 @@ export default defineComponent({
       {
         this.numDays = 5
       }
-
-    // Set the month title
-    var title = document.getElementById('monthTitle')
-    if (title != null)
-    {
-      title.innerHTML = this.curMonth
-    }
   },
 
   methods: {
@@ -94,12 +87,7 @@ export default defineComponent({
     },
     onChange (data) {
       console.log('onChange', data)
-      this.curMonth = months[data.days[this.numDays - 1].month - 1]
-      var title = document.getElementById('monthTitle')
-      if (title != null)
-      {
-        title.innerHTML = this.curMonth
-      }
+      this.curMonth = months[data.days[0].month - 1]
     },
     onClickDate (data) {
       console.log('onClickDate', data)

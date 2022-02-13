@@ -31,6 +31,13 @@ const routes = [
       },
 
       {
+        path: '/clients/appointment',
+        name: 'AppointmentEdit',
+        component: () => import('src/pages/Appointments/AppointmentEdit.vue'),
+        props: true
+      },
+
+      {
         path: '/settings',
         name: 'Settings',
         component: () => import('src/pages/Settings.vue'),
