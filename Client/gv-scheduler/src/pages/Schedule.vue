@@ -26,7 +26,7 @@
         @click-head-intervals="onClickHeadIntervals"
         @click-head-day="onClickHeadDay"
       >
-        <template #head-day-event="{ scope: { timestamp } }">
+        <!-- <template #head-day-event="{ scope: { timestamp } }">
           <div style="display: flex; justify-content: center; flex-wrap: wrap; padding: 2px;">
             <template
               v-for="event in eventsMap[timestamp.date]"
@@ -54,7 +54,7 @@
               </q-badge>
             </template>
           </div>
-        </template>
+        </template> -->
 
         <template #day-body="{ scope: { timestamp, timeStartPos, timeDurationHeight } }">
           <template
@@ -135,16 +135,20 @@ export default defineComponent({
       events: [
         {
           id: 1,
-          title: '1st of the Month',
-          details: 'Everything is funny as long as it is happening to someone else',
-          date: getCurrentDay(1),
+          title: 'Sunday Cleaning',
+          details: 'Just burn the house down at this point',
+          date: getCurrentDay(20),
+          time: '11:00',
+          duration: 60,
           bgcolor: 'orange'
         },
         {
           id: 2,
           title: 'Sisters Birthday',
           details: 'Buy a nice present',
-          date: getCurrentDay(4),
+          date: getCurrentDay(22),
+          time: '16:00',
+          duration: 30,
           bgcolor: 'green',
           icon: 'fas fa-birthday-cake'
         },
@@ -152,7 +156,7 @@ export default defineComponent({
           id: 3,
           title: 'Meeting',
           details: 'Time to pitch my idea to the company',
-          date: getCurrentDay(10),
+          date: getCurrentDay(24),
           time: '10:00',
           duration: 120,
           bgcolor: 'red',
@@ -162,7 +166,7 @@ export default defineComponent({
           id: 4,
           title: 'Lunch',
           details: 'Company is paying!',
-          date: getCurrentDay(10),
+          date: getCurrentDay(24),
           time: '11:30',
           duration: 90,
           bgcolor: 'teal',
@@ -172,7 +176,7 @@ export default defineComponent({
           id: 5,
           title: 'Visit mom',
           details: 'Always a nice chat with mom',
-          date: getCurrentDay(20),
+          date: getCurrentDay(26),
           time: '17:00',
           duration: 90,
           bgcolor: 'grey',
@@ -182,7 +186,7 @@ export default defineComponent({
           id: 6,
           title: 'Conference',
           details: 'Teaching Javascript 101',
-          date: getCurrentDay(22),
+          date: getCurrentDay(25),
           time: '08:00',
           duration: 540,
           bgcolor: 'blue',
@@ -192,7 +196,7 @@ export default defineComponent({
           id: 7,
           title: 'Girlfriend',
           details: 'Meet GF for dinner at Swanky Restaurant',
-          date: getCurrentDay(22),
+          date: getCurrentDay(23),
           time: '19:00',
           duration: 180,
           bgcolor: 'teal',
@@ -203,18 +207,20 @@ export default defineComponent({
           title: 'Fishing',
           details: 'Time for some weekend R&R',
           date: getCurrentDay(27),
+          time: '08:00',
+          duration: 360,
           bgcolor: 'purple',
-          icon: 'fas fa-fish',
-          days: 2
+          icon: 'fas fa-fish'
         },
         {
           id: 9,
           title: 'Vacation',
           details: 'Trails and hikes, going camping! Don\'t forget to bring bear spray!',
-          date: getCurrentDay(29),
+          date: getCurrentDay(19),
+          time: '08:00',
+          duration: 520,
           bgcolor: 'purple',
-          icon: 'fas fa-plane',
-          days: 5
+          icon: 'fas fa-plane'
         }
       ]
     }
