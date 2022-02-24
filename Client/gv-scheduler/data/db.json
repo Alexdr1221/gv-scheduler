@@ -16,14 +16,14 @@
           "id": 0,
           "service": "House Cleaning",
           "paymentAmount": "220",
-          "date": "2-12-2022",
+          "date": "2022-02-25",
           "time": "11:00 AM"
         },
         {
           "id": 1,
           "service": "Landscaping",
           "paymentAmount": "120",
-          "date": "02-12-2022",
+          "date": "2022-02-26",
           "time": "10:30 AM"
         }
       ],
@@ -45,7 +45,7 @@
           "id": 0,
           "service": "Landscaping",
           "paymentAmount": "220",
-          "date": "02-11-2022",
+          "date": "2022-02-19",
           "time": "11:00 AM"
         }
       ],
@@ -67,7 +67,7 @@
           "id": 0,
           "service": "Landscaping",
           "paymentAmount": "300",
-          "date": "02-07-2022",
+          "date": "2022-02-17",
           "time": "10:30 AM"
         }
       ],
@@ -89,7 +89,7 @@
           "id": 0,
           "service": "House Cleaning",
           "paymentAmount": "330",
-          "date": "02-09-2022",
+          "date": "2022-02-16",
           "time": "09:00 AM"
         }
       ],
@@ -111,7 +111,7 @@
           "id": 0,
           "service": "House Cleaning",
           "paymentAmount": "30",
-          "date": "02-07-2022",
+          "date": "2022-02-24",
           "time": "02:00 PM"
         }
       ],

@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page v-if="clients.length">
     <h3 class="q-ma-sm row justify-center">{{ curMonth }}</h3>
     <div class="row justify-center full-width">
         <q-btn class="q-ma-sm" push label="Today" @click="onToday" />
@@ -69,7 +69,7 @@
             >
               <span class="title q-calendar__ellipsis">
                 {{ event.title }}
-                <q-tooltip>{{ event.details }}</q-tooltip>
+                <q-tooltip style="white-space: pre-wrap;">{{ event.details }}</q-tooltip>
               </span>
             </div>
           </template>
@@ -103,6 +103,8 @@ import '@quasar/quasar-ui-qcalendar/src/QCalendarDay.sass'
 
 import { defineComponent } from 'vue'
 import { useQuasar } from 'quasar'
+import axios from 'axios'
+import moment from 'moment'
 
 // The function below is used to set up our demo data
 const CURRENT_DAY = new Date()
@@ -113,6 +115,7 @@ function getCurrentDay (day) {
   return tm.date
 }
 
+const BASEURL = 'http://localhost:3000/clients';
 const months = ['January', 'February', 'March',
                 'April', 'May', 'June', 'July',
                 'August', 'September', 'October',
@@ -132,6 +135,7 @@ export default defineComponent({
       intervalId: null,
       numDays: 5,
       curMonth: parseInt(today()[5] + today()[6]),
+      clients: [],
       events: [
         {
           id: 1,
@@ -157,7 +161,7 @@ export default defineComponent({
           title: 'Meeting',
           details: 'Time to pitch my idea to the company',
           date: getCurrentDay(24),
-          time: '10:00',
+          time: '9:00',
           duration: 120,
           bgcolor: 'red',
           icon: 'fas fa-handshake'
@@ -342,6 +346,7 @@ export default defineComponent({
     },
     onClickDate (data) {
       console.log('onClickDate', data)
+      console.log ('Client: ', this.clients)
     },
     onClickTime (data) {
       console.log('onClickTime', data)
@@ -354,16 +359,43 @@ export default defineComponent({
     },
     onClickHeadDay (data) {
       console.log('onClickHeadDay', data)
+    },
+    TimeConversion(time12h) {
+      return moment(time12h, 'hh:mm A').format('HH:mm')
+    },
+    PopulateCalendar() {
+      let background = (this.clients[4].appointment[0].service == 'House Cleaning') ? 'blue':'green'
+      let appDetails = this.clients[4].name + ', ' + this.clients[4].phone + '\n'
+      appDetails = appDetails + this.clients[4].street + '\n'
+      appDetails = appDetails + this.clients[4].city + ', ' + this.clients[4].state + ', ' + this.clients[4].zip
+      this.events.push(
+      {
+        id: 9,
+        title: this.clients[4].appointment[0].service,
+        details: appDetails,
+        date: this.clients[4].appointment[0].date,
+        time: this.TimeConversion(this.clients[4].appointment[0].time),
+        duration: 120,
+        bgcolor: background,
+      })
     }
   },
-  mounted(){
+  async mounted(){
     const $q = useQuasar()
 
-    this.adjustCurrentTime()
-      // now, adjust the time every minute
-      this.intervalId = setInterval(() => {
-        this.adjustCurrentTime()
-      }, 60000)
+    // this.adjustCurrentTime()
+    //   // now, adjust the time every minute
+    //   this.intervalId = setInterval(() => {
+    //     this.adjustCurrentTime()
+    //   }, 60000)
+
+    try {
+      const res = await axios.get(BASEURL);
+      this.clients = res.data;
+      this.PopulateCalendar()
+    } catch (error) {
+      console.error(error);
+    }
 
       // Set the number of days displayed
       if ($q.platform.is.mobile)
