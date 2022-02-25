@@ -26,36 +26,6 @@
         @click-head-intervals="onClickHeadIntervals"
         @click-head-day="onClickHeadDay"
       >
-        <!-- <template #head-day-event="{ scope: { timestamp } }">
-          <div style="display: flex; justify-content: center; flex-wrap: wrap; padding: 2px;">
-            <template
-              v-for="event in eventsMap[timestamp.date]"
-              :key="event.id"
-            >
-              <q-badge
-                v-if="!event.time"
-                :class="badgeClasses(event, 'header')"
-                :style="badgeStyles(event, 'header')"
-                style="width: 100%; cursor: pointer; height: 12px; font-size: 10px; margin: 1px;"
-              >
-                <span class="title q-calendar__ellipsis">
-                  {{ event.title }}
-                  <q-tooltip>{{ event.details }}</q-tooltip>
-                </span>
-              </q-badge>
-              <q-badge
-                v-else
-                :class="badgeClasses(event, 'header')"
-                :style="badgeStyles(event, 'header')"
-                style="margin: 1px; width: 10px; max-width: 10px; height: 10px; max-height: 10px"
-                @click="scrollToEvent(event)"
-              >
-                <q-tooltip>{{ event.time + ' - ' + event.details }}</q-tooltip>
-              </q-badge>
-            </template>
-          </div>
-        </template> -->
-
         <template #day-body="{ scope: { timestamp, timeStartPos, timeDurationHeight } }">
           <template
             v-for="event in getEvents(timestamp.date)"
@@ -106,15 +76,6 @@ import { useQuasar } from 'quasar'
 import axios from 'axios'
 import moment from 'moment'
 
-// The function below is used to set up our demo data
-const CURRENT_DAY = new Date()
-function getCurrentDay (day) {
-  const newDay = new Date(CURRENT_DAY)
-  newDay.setDate(day)
-  const tm = parseDate(newDay)
-  return tm.date
-}
-
 const BASEURL = 'http://localhost:3000/clients';
 const months = ['January', 'February', 'March',
                 'April', 'May', 'June', 'July',
@@ -136,97 +97,7 @@ export default defineComponent({
       numDays: 5,
       curMonth: parseInt(today()[5] + today()[6]),
       clients: [],
-      events: [
-        {
-          id: 1,
-          title: 'Sunday Cleaning',
-          details: 'Just burn the house down at this point',
-          date: getCurrentDay(20),
-          time: '11:00',
-          duration: 60,
-          bgcolor: 'orange'
-        },
-        {
-          id: 2,
-          title: 'Sisters Birthday',
-          details: 'Buy a nice present',
-          date: getCurrentDay(22),
-          time: '16:00',
-          duration: 30,
-          bgcolor: 'green',
-          icon: 'fas fa-birthday-cake'
-        },
-        {
-          id: 3,
-          title: 'Meeting',
-          details: 'Time to pitch my idea to the company',
-          date: getCurrentDay(24),
-          time: '9:00',
-          duration: 120,
-          bgcolor: 'red',
-          icon: 'fas fa-handshake'
-        },
-        {
-          id: 4,
-          title: 'Lunch',
-          details: 'Company is paying!',
-          date: getCurrentDay(24),
-          time: '11:30',
-          duration: 90,
-          bgcolor: 'teal',
-          icon: 'fas fa-hamburger'
-        },
-        {
-          id: 5,
-          title: 'Visit mom',
-          details: 'Always a nice chat with mom',
-          date: getCurrentDay(26),
-          time: '17:00',
-          duration: 90,
-          bgcolor: 'grey',
-          icon: 'fas fa-car'
-        },
-        {
-          id: 6,
-          title: 'Conference',
-          details: 'Teaching Javascript 101',
-          date: getCurrentDay(25),
-          time: '08:00',
-          duration: 540,
-          bgcolor: 'blue',
-          icon: 'fas fa-chalkboard-teacher'
-        },
-        {
-          id: 7,
-          title: 'Girlfriend',
-          details: 'Meet GF for dinner at Swanky Restaurant',
-          date: getCurrentDay(23),
-          time: '19:00',
-          duration: 180,
-          bgcolor: 'teal',
-          icon: 'fas fa-utensils'
-        },
-        {
-          id: 8,
-          title: 'Fishing',
-          details: 'Time for some weekend R&R',
-          date: getCurrentDay(27),
-          time: '08:00',
-          duration: 360,
-          bgcolor: 'purple',
-          icon: 'fas fa-fish'
-        },
-        {
-          id: 9,
-          title: 'Vacation',
-          details: 'Trails and hikes, going camping! Don\'t forget to bring bear spray!',
-          date: getCurrentDay(19),
-          time: '08:00',
-          duration: 520,
-          bgcolor: 'purple',
-          icon: 'fas fa-plane'
-        }
-      ]
+      events: []
     }
   },
 
@@ -324,7 +195,7 @@ export default defineComponent({
       const now = parseDate(new Date())
       this.currentDate = now.date
       this.currentTime = now.time
-      this.timeStartPos =  this.$refs.calendar.timeStartPos(this.currentTime, false)
+      this.timeStartPos = this.$refs.calendar.timeStartPos(this.currentTime, false)
     },
 
     onToday () {
@@ -364,30 +235,33 @@ export default defineComponent({
       return moment(time12h, 'hh:mm A').format('HH:mm')
     },
     PopulateCalendar() {
-      let background = (this.clients[4].appointment[0].service == 'House Cleaning') ? 'blue':'green'
-      let appDetails = this.clients[4].name + ', ' + this.clients[4].phone + '\n'
-      appDetails = appDetails + this.clients[4].street + '\n'
-      appDetails = appDetails + this.clients[4].city + ', ' + this.clients[4].state + ', ' + this.clients[4].zip
-      this.events.push(
+      let eventID = 0
+      for(const client of this.clients)
       {
-        id: 9,
-        title: this.clients[4].appointment[0].service,
-        details: appDetails,
-        date: this.clients[4].appointment[0].date,
-        time: this.TimeConversion(this.clients[4].appointment[0].time),
-        duration: 120,
-        bgcolor: background,
-      })
+        for(const appointment of client.appointment)
+        {
+          // console.log(client, appointment)
+          let background = (appointment.service == 'House Cleaning') ? 'blue':'green'
+          let appDetails = client.name + ', ' + client.phone + '\n'
+          appDetails = appDetails + client.street + '\n'
+          appDetails = appDetails + client.city + ', ' + client.state + ', ' + client.zip
+          this.events.push(
+          {
+            id: eventID,
+            title: appointment.service,
+            details: appDetails,
+            date: appointment.date,
+            time: this.TimeConversion(appointment.time),
+            duration: 60,
+            bgcolor: background,
+          })
+          eventID = eventID + 1
+        }
+      }
     }
   },
   async mounted(){
     const $q = useQuasar()
-
-    // this.adjustCurrentTime()
-    //   // now, adjust the time every minute
-    //   this.intervalId = setInterval(() => {
-    //     this.adjustCurrentTime()
-    //   }, 60000)
 
     try {
       const res = await axios.get(BASEURL);
@@ -397,15 +271,21 @@ export default defineComponent({
       console.error(error);
     }
 
-      // Set the number of days displayed
-      if ($q.platform.is.mobile)
-      {
-        this.numDays = 3
-      }
-      else
-      {
-        this.numDays = 5
-      }
+    // Set the number of days displayed
+    if ($q.platform.is.mobile)
+    {
+      this.numDays = 3
+    }
+    else
+    {
+      this.numDays = 5
+    }
+
+    // this.adjustCurrentTime()
+    // // now, adjust the time every minute
+    // this.intervalId = setInterval(() => {
+    //   this.adjustCurrentTime()
+    // }, 60000)
   }
 })
 </script>
