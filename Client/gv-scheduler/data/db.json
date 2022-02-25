@@ -119,6 +119,14 @@
           "date": "2022-02-24",
           "time": "02:00 PM",
           "duration": "30"
+        },
+        {
+          "id": 1,
+          "service": "Landscaping",
+          "paymentAmount": "40",
+          "date": "2022-02-28",
+          "time": "11:00 AM",
+          "duration": 40
         }
       ],
       "notes": ""

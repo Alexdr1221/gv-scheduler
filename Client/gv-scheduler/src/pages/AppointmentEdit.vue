@@ -30,10 +30,24 @@
       </template>
     </q-input>
     <q-input class="q-mx-sm q-my-lg" v-model.number="duration" label="Duration" type="number" hint="minutes" filled />
-    <div align="center">
+    <div class="q-my-lg" align="center">
       <q-btn class="q-mx-sm" color="primary" @click="cancelChanges" label="Cancel"/>
       <q-btn class="q-mx-sm" color="primary" :disable="saveDisable" @click="saveChanges" label="Save"/>
     </div>
+    <div align="center">
+      <q-btn v-if="newAppointment == 'false'" color="negative" @click="confirm = true" label="Delete"/>
+    </div>
+    <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <span class="q-ml-sm">Are you sure you want to delete the appointment?</span>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Delete" color="negative" @click="RemoveAppointment" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -68,6 +82,7 @@ export default {
     const date = ref()
     const saveDisable = ref()
     const duration = ref()
+    const confirm = ref()
 
     // Lifecycle Hooks
     onMounted(async () => {
@@ -115,7 +130,9 @@ export default {
       console.log(selectedClient.value)
       saveDisable.value = false
       clientId = clients.findIndex((clients) => clients.name==selectedClient.value)
-      appId = clients[clientId].appointment.length
+
+      let lastAppointment = clients[clientId].appointment.length - 1
+      appId = 1 + clients[clientId].appointment[lastAppointment].id
       client = clients[clientId]
     }
 
@@ -170,6 +187,12 @@ export default {
         }
       }
 
+      async function RemoveAppointment(){
+      client.appointment.splice(appId, 1)
+      updateClient()
+      $router.back()
+    }
+
     return {
       clientNames,
       newAppointment,
@@ -183,7 +206,9 @@ export default {
       saveChanges,
       cancelChanges,
       saveDisable,
-      duration
+      duration,
+      confirm,
+      RemoveAppointment
     }
   }
 }

@@ -25,8 +25,19 @@
     </q-list>
     <q-input disable class="q-mx-sm q-my-lg" filled v-model="client.notes" autogrow label="Notes" />
     <div align="center">
-      <q-btn color="negative" @click="removeClient" label="Delete"/>
+      <q-btn color="negative" @click="confirm = true" label="Delete"/>
     </div>
+    <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <span class="q-ml-sm">Are you sure you want to delete the client?</span>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+          <q-btn flat label="Delete" color="negative" @click="RemoveClient" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <q-page-sticky position="bottom-right" :offset="[18, 18]">
       <q-btn fab icon="edit" :to="{name: 'ClientEdit', params: {id: client.id}, query: {newClient: false}}" color="accent" />
     </q-page-sticky>
@@ -55,6 +66,7 @@ export default {
 
     // Exposed Variables
     const client = ref()
+    const confirm = ref(false)
 
     // Lifecycle Hooks
     onMounted(async () => {
@@ -68,7 +80,7 @@ export default {
     })
 
     // Exposed Functions
-    async function removeClient(){
+    async function RemoveClient(){
       try {
         const res = await axios.delete(BASEURL + props.id);
         console.log("Client Removed")
@@ -80,7 +92,8 @@ export default {
 
     return {
       client,
-      removeClient
+      RemoveClient,
+      confirm
     }
   }
 }

@@ -55,7 +55,8 @@ export default {
       if ($route.query.newClient == 'true'){
         try {
           const res = await axios.get(BASEURL);
-          newId = res.data.length;
+          newId = 1 + res.data[res.data.length - 1].id;
+          console.log(newId)
         } catch (error) {
           console.error(error);
         }
