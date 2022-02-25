@@ -3,20 +3,7 @@
     <q-select v-if="newAppointment == 'true'" class="q-mx-sm q-my-lg" filled @popup-hide="LoadAppointment" v-model="selectedClient" label="Client" :options="clientNames" />
     <q-select class="q-mx-sm q-my-lg" filled v-model="service" label="Service" :options="services"/>
     <q-input class="q-mx-sm q-my-lg" filled v-model="payment" type="number" label="Payment Amount" prefix="$" />
-    <q-input class="q-mx-sm q-my-lg" filled v-model="time" >
-      <template v-slot:append>
-        <q-icon name="access_time" class="cursor-pointer">
-          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-            <q-time v-model="time" mask="hh:mm A">
-              <div class="row items-center justify-end">
-                <q-btn v-close-popup label="Close" color="primary" flat />
-              </div>
-            </q-time>
-          </q-popup-proxy>
-        </q-icon>
-      </template>
-    </q-input>
-    <q-input class="q-mx-sm q-my-lg" filled v-model="date">
+    <q-input class="q-mx-sm q-my-lg" filled v-model="date" label="Date">
       <template v-slot:append>
         <q-icon name="event" class="cursor-pointer">
           <q-popup-proxy cover transition-show="scale" transition-hide="scale">
@@ -29,6 +16,20 @@
         </q-icon>
       </template>
     </q-input>
+    <q-input class="q-mx-sm q-my-lg" filled v-model="time" lebel="Time" >
+      <template v-slot:append>
+        <q-icon name="access_time" class="cursor-pointer">
+          <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+            <q-time v-model="time" mask="hh:mm A">
+              <div class="row items-center justify-end">
+                <q-btn v-close-popup label="Close" color="primary" flat />
+              </div>
+            </q-time>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+    </q-input>
+    <q-input class="q-mx-sm q-my-lg" v-model.number="duration" label="Duration" type="number" hint="minutes" filled />
     <div align="center">
       <q-btn class="q-mx-sm" color="primary" @click="cancelChanges" label="Cancel"/>
       <q-btn class="q-mx-sm" color="primary" :disable="saveDisable" @click="saveChanges" label="Save"/>
@@ -66,6 +67,7 @@ export default {
     const time = ref()
     const date = ref()
     const saveDisable = ref()
+    const duration = ref()
 
     // Lifecycle Hooks
     onMounted(async () => {
@@ -83,6 +85,7 @@ export default {
           payment.value = client.appointment[appId].paymentAmount
           date.value = client.appointment[appId].date
           time.value = client.appointment[appId].time
+          duration.value = client.appointment[appId].duration
         } catch (error) {
           console.error(error);
           $router.push('/clientNotFound')
@@ -124,7 +127,8 @@ export default {
           service: service.value,
           paymentAmount: payment.value,
           date: date.value,
-          time: time.value
+          time: time.value,
+          duration: duration.value
         }
         client.appointment.push(app)
       }
@@ -135,7 +139,7 @@ export default {
       client.appointment[appId].paymentAmount = payment.value
       client.appointment[appId].date = date.value
       client.appointment[appId].time = time.value
-
+      client.appointment[appId].duration = duration.value
       }
       console.log(client.appointment)
       updateClient()
@@ -178,7 +182,8 @@ export default {
       LoadAppointment,
       saveChanges,
       cancelChanges,
-      saveDisable
+      saveDisable,
+      duration
     }
   }
 }

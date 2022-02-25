@@ -252,7 +252,7 @@ export default defineComponent({
             details: appDetails,
             date: appointment.date,
             time: this.TimeConversion(appointment.time),
-            duration: 60,
+            duration: appointment.duration,
             bgcolor: background,
           })
           eventID = eventID + 1

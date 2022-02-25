@@ -19,7 +19,7 @@
         :to="{name: 'AppointmentEdit', params: { clientId: client.id, appId: appointment.id }, query: {newAppointment: false}}">
         <q-item-section>
           <q-item-label>{{ appointment.service }}</q-item-label>
-          <q-item-label caption lines="1">{{ appointment.date }} {{appointment.time }}</q-item-label>
+          <q-item-label caption lines="1">{{ appointment.date }} | {{ appointment.time }} | {{ appointment.duration }} minutes</q-item-label>
         </q-item-section>
       </q-item>
     </q-list>

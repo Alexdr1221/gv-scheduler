@@ -17,14 +17,16 @@
           "service": "House Cleaning",
           "paymentAmount": "220",
           "date": "2022-02-25",
-          "time": "11:00 AM"
+          "time": "11:00 AM",
+          "duration": "60"
         },
         {
           "id": 1,
           "service": "Landscaping",
           "paymentAmount": "120",
           "date": "2022-02-26",
-          "time": "10:30 AM"
+          "time": "10:30 AM",
+          "duration": "90"
         }
       ],
       "notes": "Security Code: 882734"
@@ -46,7 +48,8 @@
           "service": "Landscaping",
           "paymentAmount": "220",
           "date": "2022-02-19",
-          "time": "11:00 AM"
+          "time": "11:00 AM",
+          "duration": "100"
         }
       ],
       "notes": "Do not clean the basement."
@@ -68,7 +71,8 @@
           "service": "Landscaping",
           "paymentAmount": "300",
           "date": "2022-02-17",
-          "time": "10:30 AM"
+          "time": "10:30 AM",
+          "duration": "70"
         }
       ],
       "notes": "Leave the driveway open."
@@ -90,7 +94,8 @@
           "service": "House Cleaning",
           "paymentAmount": "330",
           "date": "2022-02-16",
-          "time": "09:00 AM"
+          "time": "09:00 AM",
+          "duration": "40"
         }
       ],
       "notes": ""
@@ -112,7 +117,8 @@
           "service": "House Cleaning",
           "paymentAmount": "30",
           "date": "2022-02-24",
-          "time": "02:00 PM"
+          "time": "02:00 PM",
+          "duration": "30"
         }
       ],
       "notes": ""
