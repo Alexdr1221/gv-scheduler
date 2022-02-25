@@ -9,7 +9,10 @@
     <q-input disable class="q-mx-sm q-my-lg" filled v-model="client.zip" label="Zip" maxlength="5" />
     <q-select disable class="q-mx-sm q-my-lg" filled v-model="client.paymentMethod" label="Payment Method" />
     <q-list class="q-mx-sm q-my-lg">
-      <q-item-label header>Appointments</q-item-label>
+      <div class="row">
+        <q-item-label class="col-11" header>Appointments</q-item-label>
+        <q-btn class="col" color="accent" icon="add" :to="{name: 'AppointmentEdit', params: { clientId: client.id } ,query: {newAppointment: true}}"/>
+      </div>
       <q-item
         v-for="appointment in client.appointment"
         :key="appointment.id"

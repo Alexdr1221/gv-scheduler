@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <q-select v-if="newAppointment == 'true'" class="q-mx-sm q-my-lg" filled @popup-hide="LoadAppointment" v-model="selectedClient" label="Client" :options="clientNames" />
+    <q-select v-if="newAppointment == 'true'" :disable="fixedClient" class="q-mx-sm q-my-lg" filled @popup-hide="ClientSelected" v-model="selectedClient" label="Client" :options="clientNames" />
     <q-select class="q-mx-sm q-my-lg" filled v-model="service" label="Service" :options="services"/>
     <q-input class="q-mx-sm q-my-lg" filled v-model="payment" type="number" label="Payment Amount" prefix="$" />
     <q-input class="q-mx-sm q-my-lg" filled v-model="date" label="Date">
@@ -83,15 +83,17 @@ export default {
     const saveDisable = ref()
     const duration = ref()
     const confirm = ref()
+    const fixedClient = ref(false)
 
     // Lifecycle Hooks
     onMounted(async () => {
       newAppointment.value = $route.query.newAppointment
-      if ($route.query.newAppointment == 'false')
+      if (newAppointment.value == 'false')
       {
         appId = props.appId
+        clientId = props.clientId
         console.log(props)
-        console.log("Importing Client Info...")
+        console.log("Importing Appointment Info...")
         try {
           const res = await axios.get(BASEURL + props.clientId)
           client = res.data
@@ -101,6 +103,21 @@ export default {
           date.value = client.appointment[appId].date
           time.value = client.appointment[appId].time
           duration.value = client.appointment[appId].duration
+        } catch (error) {
+          console.error(error);
+          $router.push('/clientNotFound')
+        }
+      }
+      else if (newAppointment.value == 'true' && props.clientId)
+      {
+        console.log("Importing Client Info...")
+        clientId = props.clientId
+        fixedClient.value = true
+        try {
+          const res = await axios.get(BASEURL + props.clientId)
+          client = res.data
+          appId = 1 + client.appointment[client.appointment.length - 1].id
+          selectedClient.value = client.name
         } catch (error) {
           console.error(error);
           $router.push('/clientNotFound')
@@ -126,7 +143,7 @@ export default {
     })
 
     //Exposed Functions
-    function LoadAppointment() {
+    function ClientSelected() {
       console.log(selectedClient.value)
       saveDisable.value = false
       clientId = clients.findIndex((clients) => clients.name==selectedClient.value)
@@ -169,21 +186,10 @@ export default {
     }
 
     async function updateClient() {
-        if ($route.query.newAppointment == 'false')
-        {
-          try {
-            const res = await axios.put(BASEURL + props.clientId, client)
-          } catch (error) {
-            console.error(error)
-          }
-        }
-        else
-        {
-          try {
-            const res = await axios.put(BASEURL + clientId, client)
-          } catch (error) {
-            console.error(error)
-          }
+        try {
+          const res = await axios.put(BASEURL + clientId, client)
+        } catch (error) {
+          console.error(error)
         }
       }
 
@@ -202,13 +208,14 @@ export default {
       time,
       date,
       services,
-      LoadAppointment,
+      ClientSelected,
       saveChanges,
       cancelChanges,
       saveDisable,
       duration,
       confirm,
-      RemoveAppointment
+      RemoveAppointment,
+      fixedClient
     }
   }
 }
