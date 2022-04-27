@@ -1,0 +1,26 @@
+{
+  "clients": [
+    {
+      "id": 0,
+      "letter": "A",
+      "name": "Alex Diaz-Rodriguez",
+      "phone": "(555) 555-5555",
+      "email": "alex.diazrodriguez@oit.edu",
+      "street": "3205 Campus Dr",
+      "city": "Klamath Falls",
+      "state": "OR",
+      "zip": "97601",
+      "paymentMethod": "Cash",
+      "appointment": [
+        {
+          "id": 0,
+          "service": "House Cleaning",
+          "paymentAmount": "50",
+          "date": "2022-04-29",
+          "time": "11:45 AM",
+          "duration": 45
+        }
+      ]
+    }
+  ]
+}

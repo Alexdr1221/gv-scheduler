@@ -116,7 +116,14 @@ export default {
         try {
           const res = await axios.get(BASEURL + props.clientId)
           client = res.data
-          appId = 1 + client.appointment[client.appointment.length - 1].id
+          if ((client.appointment.length - 1) >= 0)
+          {
+            appId = 1 + client.appointment[client.appointment.length - 1].id
+          }
+          else
+          {
+            appId = 0
+          }
           selectedClient.value = client.name
         } catch (error) {
           console.error(error);
@@ -149,7 +156,14 @@ export default {
       clientId = clients.findIndex((clients) => clients.name==selectedClient.value)
 
       let lastAppointment = clients[clientId].appointment.length - 1
-      appId = 1 + clients[clientId].appointment[lastAppointment].id
+      if (lastAppointment >= 0)
+      {
+        appId = 1 + client.appointment[client.appointment.length - 1].id
+      }
+      else
+      {
+        appId = 0
+      }
       client = clients[clientId]
     }
 
@@ -163,6 +177,11 @@ export default {
           date: date.value,
           time: time.value,
           duration: duration.value
+        }
+
+        if (app.id == 0)
+        {
+          client.appointment = []
         }
         client.appointment.push(app)
       }

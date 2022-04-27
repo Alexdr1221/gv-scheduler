@@ -55,7 +55,14 @@ export default {
       if ($route.query.newClient == 'true'){
         try {
           const res = await axios.get(BASEURL);
-          newId = 1 + res.data[res.data.length - 1].id;
+          if (res.data.length - 1 >= 0)
+          {
+            newId = 1 + res.data[res.data.length - 1].id;
+          }
+          else
+          {
+            newId = 0
+          }
           console.log(newId)
         } catch (error) {
           console.error(error);
@@ -112,6 +119,7 @@ export default {
           }
           if ($route.query.newClient == 'true')
           {
+            console.log(client)
             console.log("Uploading new client...")
             uploadClient()
           }

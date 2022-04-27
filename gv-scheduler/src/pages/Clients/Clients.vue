@@ -1,5 +1,5 @@
 <template>
-  <q-page v-if="clients.length" class="q-pa-sm" style="max-width: 100%">
+  <q-page v-if="clients" class="q-pa-sm" style="max-width: 100%">
     <q-list>
       <q-item
         v-for="client in clients"
@@ -39,7 +39,7 @@ import axios from 'axios';
 const BASEURL = 'http://localhost:3000/clients';
 
 export default {
-  
+
   data() {
     return {
       clients: []

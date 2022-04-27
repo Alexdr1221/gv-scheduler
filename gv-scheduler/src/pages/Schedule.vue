@@ -1,5 +1,5 @@
 <template>
-  <q-page v-if="clients.length">
+  <q-page>
     <h3 class="q-ma-sm row justify-center">{{ curMonth }}</h3>
     <div class="row justify-center full-width">
         <q-btn class="q-ma-sm" push label="Today" @click="onToday" />
@@ -238,24 +238,27 @@ export default defineComponent({
       let eventID = 0
       for(const client of this.clients)
       {
-        for(const appointment of client.appointment)
+        if (this.clients.length >= 0)
         {
-          // console.log(client, appointment)
-          let background = (appointment.service == 'House Cleaning') ? 'blue':'green'
-          let appDetails = client.name + ', ' + client.phone + '\n'
-          appDetails = appDetails + client.street + '\n'
-          appDetails = appDetails + client.city + ', ' + client.state + ', ' + client.zip
-          this.events.push(
+          for(const appointment of client.appointment)
           {
-            id: eventID,
-            title: appointment.service,
-            details: appDetails,
-            date: appointment.date,
-            time: this.TimeConversion(appointment.time),
-            duration: appointment.duration,
-            bgcolor: background,
-          })
-          eventID = eventID + 1
+            // console.log(client, appointment)
+            let background = (appointment.service == 'House Cleaning') ? 'blue':'green'
+            let appDetails = client.name + ', ' + client.phone + '\n'
+            appDetails = appDetails + client.street + '\n'
+            appDetails = appDetails + client.city + ', ' + client.state + ', ' + client.zip
+            this.events.push(
+            {
+              id: eventID,
+              title: appointment.service,
+              details: appDetails,
+              date: appointment.date,
+              time: this.TimeConversion(appointment.time),
+              duration: appointment.duration,
+              bgcolor: background,
+            })
+            eventID = eventID + 1
+          }
         }
       }
     }
