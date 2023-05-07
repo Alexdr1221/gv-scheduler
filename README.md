@@ -22,5 +22,11 @@ npm run lint
 quasar build
 ```
 
+### Run the json database for client storage
+```bash
+npm install -g json-server
+json-server --watch data/db.json
+```
+
 ### Customize the configuration
 See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
